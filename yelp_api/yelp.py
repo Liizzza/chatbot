@@ -1,8 +1,5 @@
 import json
 import urllib.request
-import argparse
-import pprint
-import sys
 import urllib
 
 
@@ -19,17 +16,23 @@ BUSINESS_PATH = '/v3/businesses/'
 HEADERS = {'Authorization': f'Bearer {API_KEY}', 'Accept': 'application/json'}
 
 
-
+def build_search_query(location: str, type_of_food: str, category: str, price: int, sort_by: str,
+                       limit: int):
+    query = {
+        'term': type_of_food,
+        'location': location,
+        'category': category,
+        'price': price,
+        'sort_by': sort_by,
+        'limit': limit
+    }
+    return query
 
 def build_search_url(search_query):
+    """creates a search url given the wanted parameters i.e term,location,catagory,price"""
     base_url = f'{API_HOST}{SEARCH_PATH}'
-    headers = {'Authorization': f'Bearer {API_KEY}', 'Accept': 'application/json'}
-
-    # Combine headers and query parameters in the URL
     url = f"{base_url}?{urllib.parse.urlencode(search_query)}"
-
     return url
-
 
 def request(url: str, headers):
     """
@@ -37,26 +40,23 @@ def request(url: str, headers):
     """
 
     try:
-        # Make the API request using urllib.requests
         req = urllib.request.Request(url, headers = headers)
         with urllib.request.urlopen(req) as response:
             data = json.loads(response.read().decode('utf-8'))
             return data
 
     except urllib.error.HTTPError as e:
-        # Handle HTTP errors
         print(f"HTTP Error {e.code}: {e.reason}")
         return None
 
     except Exception as e:
-        # Handle other exceptions
         print(f"An error occurred: {e}")
         return None
 
 
 if __name__ == "__main__":
     # Example search query
-    search_query = {'term': 'pizza', 'location': 'New York'}
+    search_query = build_search_query('new york', 'pizza')
     # Build the Yelp search URL
     search_url = build_search_url(search_query)
     # Make Yelp API request
