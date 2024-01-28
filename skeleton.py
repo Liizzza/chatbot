@@ -1,10 +1,16 @@
 from chatterbot import ChatBot
 from chatterbot.trainers import ChatterBotCorpusTrainer, ListTrainer
+from chatterbot.storage import SQLStorageAdapter
 import nltk
 import ssl
 import spacy
 import yelp
+#from FoodLogic import FoodLogicAdapter
 import collections
+
+from chatbot import FoodLogic
+
+
 collections.Hashable = collections.abc.Hashable
 
 try:
@@ -14,8 +20,14 @@ except AttributeError:
 else:
     ssl._create_default_https_context = _create_unverified_https_context
 
+storage_adapter = SQLStorageAdapter(
+    database_uri='sqlite:///database.db',
+    read_only=False,  # Set to True if you want to prevent the chatbot from learning during runtime
+)
+
+
 food_chatbot = ChatBot('FoodBot', logic_adapters=[
-        "chatterbot.logic.BestMatch"
+        "chatterbot.logic.BestMatch", {'import_path': 'chatbot.FoodLogic.FoodLogicAdapter'}
     ])
 
 trainer = ChatterBotCorpusTrainer(food_chatbot)
@@ -98,6 +110,10 @@ trainer_list.train([
 
 
 agreeing_words = ["YES",'OKAY',"SURE","OK","Y","OKY"]
+
+def get_bot_response(user_input):
+    response = food_chatbot.get_response(user_input)
+    return response
 def chat_with_bot():
     print("Food Bot🍔: Hello! I'm FoodBot. Ask me anything about food.")
     category = None
@@ -110,6 +126,8 @@ def chat_with_bot():
 
     while True:
         user_input = input("You: ")
+        # response = food_chatbot.get_response(user_input)
+        # print(f'Food Bot🍔: {response}')
 
         if 'WHERE' in user_input.upper() or 'SEARCH' in user_input.upper() or 'FIND' in user_input.upper():
             location = input('Food Bot🍔: Enter your location\nYou: ')
@@ -166,30 +184,29 @@ def chat_with_bot():
                     print("Food Bot🍔: Woops something went wrong! Please try again later")
         elif 'BYE' in user_input.upper():
             print(f'Food Bot🍔: Goodbye! I hope I helped you find your new favorite place!')
-            break
         else:
             response = food_chatbot.get_response(user_input)
             print(f'Food Bot🍔: {response}')
-            #
-            # feedback = input("Was the response helpful? (yes/no): ")
-            # if feedback.lower() == 'yes':
-            #     # If the response was helpful, continue the conversation
-            #     new_input = input("You: ")
-            #     new_response = input("Bot: ")
 
-            #     # Train the chatbot with the new interaction
-            #     trainer_list.train([
-            #         user_input,
-            #         response.text,
-            #         new_input,
-            #         new_response
-            #     ])
-            # else:
-            #     user_desired = input("What is your desired response?: ")
-            #     trainer_list.train([
-            #         user_input,
-            #         user_desired
-            #     ])
+            feedback = input("Was the response helpful? (yes/no): ")
+            if feedback.lower() == 'yes':
+                # If the response was helpful, continue the conversation
+                new_input = input("You: ")
+                new_response = input("Bot: ")
+
+                # Train the chatbot with the new interaction
+                trainer_list.train([
+                    user_input,
+                    response.text,
+                    new_input,
+                    new_response
+                ])
+            else:
+                user_desired = input("What is your desired response?: ")
+                trainer_list.train([
+                    user_input,
+                    user_desired
+                ])
 
 
 
@@ -211,4 +228,4 @@ def main():
     chat_with_bot()
 
 if __name__ == '__main__':
-    main()
+    pass
