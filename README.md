@@ -32,4 +32,8 @@ as well as more starters for conversation flows.
 
 The Yelp API queries are made in `yelp.py`. Modify the search parameters here.
 
+You are able to use the shell version of the chatterbot in 'skeleton.py' just change the 
+if __name__ == __main__:
+to main() instead of pass
+
 The graphical interface is powered by Tkinter in `gui.py`. Customize the UI by editing this file.
