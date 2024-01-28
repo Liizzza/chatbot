@@ -46,7 +46,8 @@ trainer_list.train([
     "Hi", "Hello, I am your FoodBot🍔! How can I help you",
     "I am hungry.", "Here are some suggestions: pizza places, burger places, and italian places",
     "Recommend me healthy food.", "There are many places with healthy food! To learn more type 'where should i eat'",
-    "Thank you for your help", "No problem. Anything else you need?"
+    "Thank you for your help", "No problem. Anything else you need?",
+    "What should I eat", "Why not try something protein packed? Chipotle?"
 ])
 # trainer_list.train([
 #     "I don't know what to eat", "Are you really hungry?",
@@ -87,7 +88,12 @@ trainer_list.train([
     "coffee recommendations", "Okay I can help you find some as soon as you specify to find coffee in an area",
     "matcha reccommendations", "Okay! I can help you find some as soon as you specify to find matcha in your area",
     "matcha", "Do you mean, the best thing on earth? I can help you find the universe's gift to the world with an easy search"
+    "I want boba", "Of course would you like help finding boba in your area",
+    "hi", "Hello! I am ChompBot, here to help"
+    "i want dessert", "I can help you find dessert in your area",
+    "boba", "Would you like me to help you find your new favorite place?"
 ])
+
 #
 # trainer_list.train([
 #     'hi i want food recommendations', 'Of course! I am here to help, what food recommendations do u want.'
