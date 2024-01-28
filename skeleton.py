@@ -1,14 +1,10 @@
 from chatterbot import ChatBot
 from chatterbot.trainers import ChatterBotCorpusTrainer, ListTrainer
 from chatterbot.storage import SQLStorageAdapter
-import nltk
 import ssl
-import spacy
 import yelp
-#from FoodLogic import FoodLogicAdapter
 import collections
 
-from chatbot import FoodLogic
 
 
 collections.Hashable = collections.abc.Hashable
