@@ -80,22 +80,22 @@ class ChompBot:
                 if self.type_of_food == "no":
                     self.type_of_food = ''
                 self.entry.delete(0, tk.END)
-                self.print_prompt("Please enter a specific range? Type 1,2,3, or 4. One being least expensive")
+                self.print_prompt("Please enter a specific price? Type 1,2,3, or 4. One being least expensive")
             elif not self.price_range:
                 self.price_range = user_input
                 self.entry.delete(0, tk.END)
                 try:
                     self.price_range = int(self.price_range)
                     if self.price_range < 1 or self.price_range >4:
-                        self.print_prompt("Too high or Too low!")
+                        self.print_prompt("Too high or Too low! Please enter how many options you would like: ")
                         self.price_range = None
                         self.entry.delete(0, tk.END)
                     else:
                         self.print_prompt(
-                            "Would you like a certain # of options? Must be less than twenty! Hit return to skip")
+                            "Please enter how many options you want! Must be less than twenty")
                 except ValueError:
                     self.print_prompt("Invalid Number for price")
-                    self.print_prompt("Would you like a certain # of options? Must be less than twenty!Hit return to skip")
+                    self.print_prompt("Please enter how many options you want! Must be less than twenty")
 
             elif not self.options:
                 self.options = user_input
